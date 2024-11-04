@@ -140,3 +140,18 @@ services:
     <<: *init-ollama
     depends_on:
       - ollama-gpu
+
+flowise:
+    image: flowiseai/flowise
+    container_name: flowise
+    networks: ['demo']
+    restart: unless-stopped
+    ports:
+      - 3001:3000
+    environment:
+      - FLOWISE_PORT=3000
+      - QDRANT_URL=http://qdrant:6333
+      - POSTGRES_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    depends_on:
+      - postgres
+      - qdrant
